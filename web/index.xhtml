@@ -5,16 +5,54 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Seagle Consumer WS</title>
+        <title>SML Web Service Consumer</title>
     </h:head>
     <h:body>
 
         <f:view>
             <h:form>
-                <h:outputText value="Select projects to include in the Clustering Analysis" />
-                <p:selectManyCheckbox id="grid" value="#{ConsumerView.selectedProjects}" layout="grid" columns="5">
-                    <f:selectItems value="#{ConsumerView.availableProjects}" var="city" itemLabel="#{project}" itemValue="#{project}" />
-                </p:selectManyCheckbox>
+                <p:growl id="growl" life="2000" />
+
+                <h3>Select projects to include in the Analysis</h3>
+
+                <p:dataTable id = "projectTable" var="project" value="#{ConsumerView.availableProjects}" rows="20" paginator="true">
+                    <p:column headerText="ID">
+                        <h:outputText value="#{project.id}" />
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{project.name}" />
+                    </p:column>
+
+                    <p:column headerText="Analyze?">
+                        <p:selectBooleanCheckbox value="#{project.includeInAnalysis}"/>
+                    </p:column>
+                </p:dataTable>   
+
+
+                <h:panelGrid columns="5" cellpadding="5"> 
+                    <p:commandButton value="Perform Clustering Analysis" id="clusterButton" update="growl" actionListener="#{ConsumerView.buttonAction}" />
+                    <h:outputLabel for="clusters" value="Number of Clusters to create: " style="font-weight:bold" />
+                    <h:inputText id="clusters" value="#{ConsumerView.numberOfClusters}" />
+
+                </h:panelGrid>
+
+                <p:overlayPanel id="selectedProjectPanel" for="clusterButton" hideEffect="fade" dynamic="true" style="width:600px">
+                    <h3>Selected projects:</h3>
+                    <p:dataTable var="project" value="#{ConsumerView.selectedProjects}" rows="5" paginator="true">
+                        <p:column headerText="ID">
+                            <h:outputText value="#{project.id}" />
+                        </p:column>
+                        <p:column headerText="Name">
+                            <h:outputText value="#{project.name}" />
+                        </p:column>
+                        <p:column headerText="Analyze?">
+                            <p:selectBooleanCheckbox value="#{project.includeInAnalysis}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:overlayPanel>
+
+
             </h:form>
         </f:view>
 

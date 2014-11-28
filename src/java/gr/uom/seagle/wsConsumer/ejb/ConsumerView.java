@@ -1,17 +1,21 @@
-
 package gr.uom.seagle.wsConsumer.ejb;
 
 import gr.uom.seagle.wsConsumer.db.Project;
+import java.awt.event.ActionEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -20,39 +24,68 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean(name = "ConsumerView")
 @ViewScoped
 @TransactionManagement(TransactionManagementType.CONTAINER)
-public class ConsumerView implements Serializable{
+public class ConsumerView implements Serializable {
 
     @EJB
     WebServiceClientBean dataBean;
-    
-    private List<Project> availableProjects;
-    private List<Project> selectedProjects;
-    
-    public ConsumerView(){
-        selectedProjects = new ArrayList<>();
+
+    private int numberOfClusters;
+
+    private List<CustomProject> availableProjects;
+    private Set<CustomProject> selectedProjects;
+
+    public ConsumerView() {
+        numberOfClusters = 4;
+        selectedProjects = new HashSet<>();        
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public List<Project> getAvailableProjects() {
-        availableProjects = dataBean.getProjects();
+    public List<CustomProject> getAvailableProjects() {
+        List<Project> available = dataBean.getProjects();
+        availableProjects = new ArrayList<>();
+        for(Project p : available) {
+            availableProjects.add(new CustomProject(p.getPid(), p.getName(), false));
+        }
         return availableProjects;
     }
 
-    public void setAvailableProjects(List<Project> availableProjects) {
+    public void setAvailableProjects(List<CustomProject> availableProjects) {
         this.availableProjects = availableProjects;
     }
 
-    public List<Project> getSelectedProjects() {
+    public Set<CustomProject> getSelectedProjects() {
+        for(CustomProject p : availableProjects){
+            if(p.isIncludeInAnalysis()){
+                selectedProjects.add(p);
+            }
+        }
         return selectedProjects;
     }
 
-    public void setSelectedProjects(List<Project> selectedProjects) {
+    public void setSelectedProjects(Set<CustomProject> selectedProjects) {
         this.selectedProjects = selectedProjects;
     }
-    
-    public void sendToWebService(){
-        
+
+    public int getNumberOfClusters() {
+        return numberOfClusters;
     }
-    
-    
+
+    public void setNumberOfClusters(int numberOfClusters) {
+        this.numberOfClusters = numberOfClusters;
+    }
+
+    public void buttonAction() {
+        String s = "Selected Projects Info";
+      //  addMessage(s);
+    }
+
+    public void addMessage(String summary) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public void sendToWebService() {
+
+    }
+
 }
