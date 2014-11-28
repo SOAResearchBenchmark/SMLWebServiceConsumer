@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://ssrg18.cs.ualberta.ca:8080/SMLService/services/SMLService?wsdl" uri="src/conf/xml-resources/web-service-references/SMLService/wsdl/ssrg18.cs.ualberta.ca_8080/SMLService/services/SMLService.wsdl"/>
+</catalog>
