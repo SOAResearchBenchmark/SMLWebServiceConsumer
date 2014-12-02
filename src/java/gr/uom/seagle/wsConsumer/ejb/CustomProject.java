@@ -48,7 +48,23 @@ public class CustomProject {
     public String toString() {
         return id + " , "+name+" , Include? " + includeInAnalysis;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CustomProject other = (CustomProject) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
+    }
     
+    @Override
     public int hashCode(){
         String s = ""+id;
         return s.hashCode();

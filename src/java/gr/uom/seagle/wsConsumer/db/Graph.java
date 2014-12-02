@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Graph.findAll", query = "SELECT g FROM Graph g"),
     @NamedQuery(name = "Graph.findByGid", query = "SELECT g FROM Graph g WHERE g.gid = :gid"),
+    @NamedQuery(name = "Graph.findByVid", query = "SELECT g FROM Graph g WHERE g.vid = :vid"),
     @NamedQuery(name = "Graph.findByNodes", query = "SELECT g FROM Graph g WHERE g.nodes = :nodes"),
     @NamedQuery(name = "Graph.findByEdges", query = "SELECT g FROM Graph g WHERE g.edges = :edges"),
     @NamedQuery(name = "Graph.findByCc", query = "SELECT g FROM Graph g WHERE g.cc = :cc"),

@@ -1,9 +1,9 @@
 package gr.uom.seagle.wsConsumer.ejb;
 
 import gr.uom.seagle.wsConsumer.db.Project;
-import java.awt.event.ActionEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,14 +36,14 @@ public class ConsumerView implements Serializable {
 
     public ConsumerView() {
         numberOfClusters = 4;
-        selectedProjects = new HashSet<>();        
+        selectedProjects = new HashSet<>();
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<CustomProject> getAvailableProjects() {
         List<Project> available = dataBean.getProjects();
         availableProjects = new ArrayList<>();
-        for(Project p : available) {
+        for (Project p : available) {
             availableProjects.add(new CustomProject(p.getPid(), p.getName(), false));
         }
         return availableProjects;
@@ -53,9 +53,9 @@ public class ConsumerView implements Serializable {
         this.availableProjects = availableProjects;
     }
 
-    public Set<CustomProject> getSelectedProjects() {
-        for(CustomProject p : availableProjects){
-            if(p.isIncludeInAnalysis()){
+    public Collection<CustomProject> getSelectedProjects() {
+        for (CustomProject p : availableProjects) {
+            if (p.isIncludeInAnalysis()) {
                 selectedProjects.add(p);
             }
         }
@@ -75,8 +75,9 @@ public class ConsumerView implements Serializable {
     }
 
     public void buttonAction() {
-        String s = "Selected Projects Info";
-      //  addMessage(s);
+        addMessage("Calling Web Service");
+        dataBean.processProjects(getSelectedProjects());
+        //addMessage(s);
     }
 
     public void addMessage(String summary) {
@@ -85,7 +86,7 @@ public class ConsumerView implements Serializable {
     }
 
     public void sendToWebService() {
-
+        
     }
 
 }
